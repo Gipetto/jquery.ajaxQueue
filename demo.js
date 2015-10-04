@@ -1,6 +1,6 @@
 $(function(){
 	var output = $('#queue-response'),
-		request_uri = 'http://top-frog.com/stuff/ajax-queue.php',
+		request_uri = 'http://top-frog.com/stuff/ajax-queue/',
 		myQueue = new ajaxQueue(),
 		theQueue = new ajaxQueue(),
 		randInt;
