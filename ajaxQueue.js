@@ -7,6 +7,8 @@
 	 * @author Shawn Parker (shawn at topfroggraphics dot com)
 	 */
 	ajaxQueue = function() {
+		var myself = this;
+		
 		/**
 		 * Request object
 		 * Handles the abstraction of ajax 'complete' method for running in the queue
@@ -17,10 +19,16 @@
 			this.opts.url = url;
 			this.opts.method = method || 'get';
 
-			var _complete = this.opts.complete || function() {};
+			// wrap the complete function so that we can use it to dequeue
+			var _complete = this.opts.complete || function(r) {};
 			this.opts.complete = function(r) {
 				_complete(r);
-				_aQueue.dequeue('requests');
+				if(_aQueue.queue('requests').length > 0) {
+					_aQueue.dequeue('requests');
+				} else {
+					console.log(myself.complete);
+					myself.complete(r);
+				}
 			};
 		};
 
@@ -39,7 +47,7 @@
 		/**
 		 * Add an empty .complete() function on the queue object
 		 */
-		_aQueue.complete = function(){};
+		_aQueue.complete = function(r){};
 
 		/**
 		 * Add to queue

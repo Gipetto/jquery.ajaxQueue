@@ -14,8 +14,12 @@
 <body>
 	<div class="container">
 		<h1>jQuery Queue Test <small><a href="https://github.com/Gipetto/jquery.ajaxQueue">View code on Github.com</a></small></h1>
-		<p>This example queues up four requests. Request #2 queues up 3 more on successful completion of its request.</p>
-		<section id="queue-response"></section>
+		<p>This example queues up four requests. Request #2 queues up 3 more on completion of its request.</p>
+		<p>Request times, successes, and failures are random.</p>
+		<section id="queue-response" class="row">
+			<div id="queue1" class="col-md-6"></div>
+			<div id="queue2" class="col-md-6"></div>
+		</section>
 	</div>
 	<footer>
 		<div class="container">
@@ -25,113 +29,6 @@
 	</footer>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="ajaxQueue.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			var output = $('#queue-response'),
-				myQueue = new ajaxQueue(),
-				theQueue = new ajaxQueue();
-				
-			myQueue.complete = function() {
-				addNotice('<b>Queue 1: complete', 'success');
-			}
-			
-			function randomInt(min, max) {
-			    return (Math.floor(Math.random() * (max - min + 1)) + min).toString();
-			}
-			
-			function addNotice(noticeText, type) {
-				type = type || 'info';
-				output.append($('<div class="alert alert-' + type + '" role="alert">' + noticeText + '</div>'))
-			}
-			
-			request_uri = 'http://fake-response.appspot.com/?sleep=';
-			
-			addNotice('<b>Queue 1:</b> queueing #1');
-			myQueue.add(
-				request_uri + randomInt(0, 4),
-				'get',
-				{
-					success: function(r) {
-						addNotice('<b>Queue 1:</b> Success #1 - response: ' + r.response, 'success');
-					}
-				}
-			);
-			
-			addNotice('<b>Queue 1:</b> adding #2');
-			myQueue.add(
-				request_uri + randomInt(0, 4),
-				'get',
-				{
-					type: 'text',
-					success: function(r) {
-						addNotice('<b>Queue 1:</b> Success #2 - response: ' + r.response, 'success');
-						
-						// continue adding to myQueue
-						// Provide Success Method
-						addNotice('<b>Queue 1:</b> adding #3');
-						myQueue.add(
-							request_uri + randomInt(0, 4),
-							'get',
-							{
-								success: function(r) {
-									addNotice('<b>Queue 1:</b> Success #3 - response: ' + r.response, 'success');
-								}
-							}
-						);
-
-						// Provide error method
-						addNotice('<b>Queue 1:</b> adding #4');
-						myQueue.add(
-							request_uri + randomInt(0, 4),
-							'get',
-							{
-								complete: function(r) {
-									addNotice('<b>Queue 1:</b> Success #4 - response: ' + r.responseJSON.response, 'success');
-								}
-							}
-						);
-
-						// Provide Complete Method
-						addNotice('<b>Queue 1:</b> adding #5');
-						myQueue.add(
-							request_uri + randomInt(0, 4),
-							'get',
-							{
-								complete: function(r) {
-									addNotice('<b>Queue 1:</b> Success #5 - response: ' + r.responseJSON.response, 'success');
-								}
-							}
-						);
-					}
-				}
-			);
-			
-			addNotice('<b>Queue 2:</b> adding #1');
-			theQueue.add(
-				request_uri + randomInt(0, 4),
-				'get',
-				{
-					success: function(r) {
-						addNotice('<b>Queue 2:</b> Success #1 - response: ' + r.response, 'success');
-					}
-				}
-			);
-			
-			addNotice('<b>Queue 2:</b> adding #2');
-			theQueue.add(
-				request_uri + randomInt(0, 4),
-				'get',
-				{
-					success: function(r) {
-						addNotice('<b>Queue 2:</b> Success #2 - response: ' + r.response, 'success');
-					}
-				}
-			);
-						
-			// run
-			theQueue.run();
-			myQueue.run();
-		});
-	</script>
+	<script type="text/javascript" src="demo.js"></script>
 </body>
 </html>
