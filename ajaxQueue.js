@@ -26,7 +26,6 @@
 				if(_aQueue.queue('requests').length > 0) {
 					_aQueue.dequeue('requests');
 				} else {
-					console.log(myself.complete);
 					myself.complete(r);
 				}
 			};
